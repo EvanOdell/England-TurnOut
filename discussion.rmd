@@ -1,0 +1,14 @@
+---
+title: "discussion"
+author: "Evan Odell"
+date: "12 October 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Discussion
+                                                                                                                                                                                                               
+The rationale behind this model was to demonstrate the relative futility of Labour using increased turnout as an electoral strategy.
