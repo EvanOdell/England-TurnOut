@@ -9,11 +9,9 @@
 
 library(shiny)
 
-# Define UI for application that draws a histogram
-ui <- shinyUI(navbarPage(tags$a(href="http://evanodell.com", "Home"),
-###Plan
-  #1. Allow for weighting of turnout relative to existing levels of turnout. Lower turnout = increased growth
-  #2. what other models are there?
+
+ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny Home"),
+
                        tabPanel("Turnout Tool",
                                   
                                   fluidPage(
@@ -21,22 +19,34 @@ ui <- shinyUI(navbarPage(tags$a(href="http://evanodell.com", "Home"),
                                     h3("England Electoral Turnout"),
                                     
                                     p("A tool to estimate what changes in turnout do to electoral results. For details please see the methods tab."),
-                                    
+                                    fluidRow(
+                                      column(6,
                                     sliderInput(inputId = "turnOut", label = "Voter Turnout", 
                                                 min=17.2, max=88.5, value=65.8, 
                                                 step = 0.1, ticks = TRUE, animate = FALSE,
                                                 width = NULL),
                                     selectInput(inputId = "distro", 
-                                                 label = "What distribution would you like?",
-                                                 choices = c("Uniform", "Weighted"),
+                                                 label = "Select a distribution",
+                                                 choices = c("Uniform", "Turnout", "Marginality"),
                                                  selected = "Uniform"),
-                                    # plotOutput("map"),
-                                    fluidRow(
+                                    br(),
+                                    h3("Seats in England"),
+                                    htmlOutput("winner")     
+                                    
+                                    ),
                                       column(6,
-                                             tableOutput("winner")
-                                      )
-                                      
-                                      ),
+                                        numericInput("toryNon", "Percentage of Non-Voters Supporting the Conservatives",
+                                                     20,min=1,max=100),
+                                        numericInput("greenNon", "Percentage of Non-Voters Supporting the Greens",
+                                                     5,min=1,max=100),
+                                        numericInput("labourNon", "Percentage of Non-Voters Supporting Labour",
+                                                     50,min=1,max=100),
+                                        numericInput("libdemNon", "Percentage of Non-Voters Supporting the Liberal Democrats",
+                                                     10,min=1,max=100),
+                                        numericInput("ukipNon", "Percentage of Non-Voters Supporting Ukip",
+                                                     15,min=1,max=100)                                        
+                                             )
+                                    ),
                                     br(),
                                     h4("Total Votes"),
                                     fluidRow(
@@ -44,31 +54,26 @@ ui <- shinyUI(navbarPage(tags$a(href="http://evanodell.com", "Home"),
                                            tableOutput("votes")
                                           )
                                         ),
-                                    fluidRow(
+                                    fluidRow(#Total number of votes per party
                                       column(2),
                                       column(2,
                                              h4("Conservative")
-                                             #, textOutput("toryShare")
                                       ),
                                       column(2,
                                              h4("Green")
-                                             #, textOutput("greenShare")
                                       ),
                                       column(2,
                                              h4("Labour")
-                                             #, textOutput("labourShare")
                                       ),
                                       column(2,
                                              h4("Liberal Democrats")
-                                             #, textOutput("libdemShare")
                                       ),
                                       column(2,
                                              h4("Ukip")
-                                             #, textOutput("ukipShare")
                                       )
                                     ),
                                                                         
-                                    fluidRow(
+                                    fluidRow(#vote share per party
                                       column(2,
                                              h4("Vote Share")),
                                       column(2,
@@ -117,14 +122,15 @@ ui <- shinyUI(navbarPage(tags$a(href="http://evanodell.com", "Home"),
                                         
                          tabPanel("Methods",
                                   fluidRow(
-                                    column(10,
+                                    column(6,
                                            includeMarkdown("methods.rmd")
                                     )
                                   )
                          ),
                          tabPanel("Discussion",
+                                  fluidRow(column(1)),
                                   fluidRow(
-                                    column(10,
+                                    column(6,
                                            includeMarkdown("discussion.rmd")
                                     )
                                   )

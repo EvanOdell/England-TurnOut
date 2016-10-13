@@ -9,9 +9,22 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Methodology
+# Methodology
 
-A tool to estimate what changes in turnout do to general election results in England. The model used assumes that, if they voted, 50% of non-voters would back Labour, 20% would vote Conservative, 15% would vote Ukip, 10% would support the Liberal Democrats and 5% would vote Green. The model also assumes that in cases of turnout decline the proportion of non-voters who would back each party remains constant, and that changes in turnout are uniform across all constituencies. Turnout is capped at 88.5% and can be no less than 17.2%, so that no constituency can have zero turnout or turnout over 100%. Turnout in England in the 2015 general election was 65.8%. [The highest post-war turnout in England was 84.4% in the 1950 general election.](http://www.ukpolitical.info/Turnout45.htm)
+A [Shiny](http://shiny.rstudio.com/) tool to estimate what changes in turnout do to general election results in England. The default assumption is that, if they voted, 50% of non-voters would back Labour, 20% would vote Conservative, 15% would vote Ukip, 10% would support the Liberal Democrats and 5% would vote Green. These inputs can be changed, so long as they add up to 100%. Turnout is capped at 88.5% and can be no less than 17.2%, so that no constituency can have zero turnout or turnout over 100%. Turnout in England in the 2015 general election was 65.8%. [The highest post-war turnout in England was 84.4% in the 1950 general election.](http://www.ukpolitical.info/Turnout45.htm)
+
+
+### Distributions
+
+There are three distribution options available. 
+
+1. A simple uniform distribution, where turnout increases by the same amount (in terms of percentage points) across all constituences.
+
+2. A distribution with larger effects in constituencies with low turnouts. Turnout is weighted on a range of 0-2, and constituencies with lower turnout will see greater changes in turnout, depending on overall turnout. The constituency with the highest turnout will not record any changes in turnout
+
+3. A distribution with larger effects in marginal constituencies. Turnout is weighted on a range of 0-2,so that more marginal constituencies will see greater changes in turnout, depending on overall turnout, and the least marginal constituency will see no change in turnout.
+
+### Rationale
 
 The rationale behind this model comes from [this broadcast](http://www.bbc.co.uk/programmes/b06950lm/broadcasts) of the BBC radio programme *More or Less*, which looked at the effectiveness of the political strategy of targetting non-voters, particularly in the context of UK Labour Party leader Jeremy Corbyn, whose strategy in both internal Labour party elections involved activating new Labour Party members, and whose likely strategy in the next general election would also involve increasing turnout. The broadcast presented some assumptions on who non-voters would back (which I have borrowed), but did not attempt to model what changes in electoral turnout could do to seat distribution.
 
@@ -19,5 +32,16 @@ The model uses 532 constituencies in England (all English constituencies exlcudi
 
 On the face of it, activating non-voters is a sound strategy for Labour. It worked wonders for Barack Obama in 2008, and it is a political trope that higher turnout benefits opposition parties (because the electorate desires change) and left-of-centre parties (who enjoy strong support amongst the young and the poor, who are less likely to vote). While the constituencies with the lowest turnout tend to vote Labour, a uniform increase in turnout could prove effective in marginal seats. 
 
-If you have any questions or comments about the model, or have any improvements you would like to see, please [drop me an email](mailto:evanodell91@gmail.com).
+If you have any questions or comments about the model, or have any improvements you would like to see, please [drop me an email](mailto:evanodell91@gmail.com). The code and data used in this model is on <a href="https://github.com/EvanOdell/England-TurnOut" target="_blank">GitHub</a>.
+
+### 2015 General Election Seats
+
+Party  | Seats
+------------- | -------------
+Conservative  | 318
+Green  | 1
+Labour | 206
+Liberal Democrats | 6
+Ukip | 1
+Speaker | 1
 
