@@ -125,14 +125,13 @@ server <- function(input, output, session){
                                                 values$df$ukip>values$df$libdem, TRUE,FALSE))
         
         values$df$winner <- as.factor(ifelse(values$df$torywin==TRUE,"Conservatives",
-                                      ifelse(values$df$greenwin==TRUE,"Green",
-                                      ifelse(values$df$labourwin==TRUE,"Labour",
-                                      ifelse(values$df$libdemwin==TRUE,"Liberal Democrats",
-                                      ifelse(values$df$ukipwin==TRUE,"Ukip", NA))))))      
+                                             ifelse(values$df$greenwin==TRUE,"Green",
+                                                    ifelse(values$df$labourwin==TRUE,"Labour",
+                                                           ifelse(values$df$libdemwin==TRUE,"Liberal Democrats",
+                                                                  ifelse(values$df$ukipwin==TRUE,"Ukip", NA))))))      
       })
       
     }else if(input$distro=="Marginality"){
-      
       newData <- reactive({
         values$df$labour <- cont2$labour + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$labourNon/100))*cont2$marginStand)
         values$df$tory <- cont2$tory + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$toryNon/100))*cont2$marginStand)
@@ -166,89 +165,114 @@ server <- function(input, output, session){
                                                 values$df$ukip>values$df$libdem, TRUE,FALSE))
         
         values$df$winner <- as.factor(ifelse(values$df$torywin==TRUE,"Conservatives",
-                                      ifelse(values$df$greenwin==TRUE,"Green",
-                                      ifelse(values$df$labourwin==TRUE,"Labour",
-                                      ifelse(values$df$libdemwin==TRUE,"Liberal Democrats",
-                                      ifelse(values$df$ukipwin==TRUE,"Ukip", NA))))))
+                                             ifelse(values$df$greenwin==TRUE,"Green",
+                                                    ifelse(values$df$labourwin==TRUE,"Labour",
+                                                           ifelse(values$df$libdemwin==TRUE,"Liberal Democrats",
+                                                                  ifelse(values$df$ukipwin==TRUE,"Ukip", NA))))))
       })
-    }
-    
-    output$table1 <- renderUI({
-      validate(
-        need(input$toryNon+
-               input$greenNon+
-               input$labourNon+
-               input$libdemNon+
-               input$ukipNon == 100, 'Inputs must sum to 100%')
-      )
-      #Conservatives
-      torySeats <- paste(
-        sum(values$df$torywin==TRUE))
-      toryVotes <- paste(
-        formatC(round(sum(values$df$tory),digits=0), format="d", big.mark=','))
-      toryShare <- paste(
-        round((sum(values$df$tory)/sum(values$df$votes))*100,digits=2),"%",sep="")
-      #Greens
-      greenSeats <- paste(
-        sum(values$df$greenwin==TRUE))
-      greenVotes <- paste(
-        formatC(round(sum(values$df$green),digits=0), format="d", big.mark=','))
-      greenShare <- paste(
-        round((sum(values$df$green)/sum(values$df$votes))*100,digits=2),"%",sep="")
-      #Labour
-      labourSeats <- paste(
-        sum(values$df$labourwin==TRUE))
-      labourVotes <- paste(
-        formatC(round(sum(values$df$labour),digits=0), format="d", big.mark=','))
-      labourShare <- paste(
-        round((sum(values$df$labour)/sum(values$df$votes))*100,digits=2),"%",sep="")
-      #LibDems
-      libdemSeats <- paste(
-        sum(values$df$libdemwin==TRUE))
-      libdemVotes <- paste(
-        formatC(round(sum(values$df$libdem),digits=0), format="d", big.mark=','))
-      libdemShare <- paste(
-        round((sum(values$df$libdem)/sum(values$df$votes))*100,digits=2),"%",sep="")
-      #Ukip
-      ukipSeats <- paste(
-        sum(values$df$ukipwin==TRUE))
-      ukipVotes <- paste(
-        formatC(round(sum(values$df$ukip),digits=0), format="d", big.mark=','))
-      ukipShare <- paste(
-        round((sum(values$df$ukip)/sum(values$df$votes))*100,digits=2),"%",sep="")
       
-      tags$table(HTML(paste(tags$tr(
-            tags$th(""),
-            tags$th("Seats"),
-            tags$th("Votes"),
-            tags$th("Vote Share"))),
-           paste(tags$tr(id="toryRow",
-             tags$th(h4("Conservatives")),
-             tags$td(torySeats),
-             tags$td(toryVotes),
-             tags$td(toryShare))),
-           paste(tags$tr(id="greenRow",
-             tags$th(h4("Green")),
-             tags$td(greenSeats),
-             tags$td(greenVotes),
-             tags$td(greenShare))),
-           paste(tags$tr(id="labourRow",
-             tags$th(h4("Labour")),
-             tags$td(labourSeats),
-             tags$td(labourVotes),
-             tags$td(labourShare))),
-           paste(tags$tr(id="libDemRow",
-             tags$th(h4("Liberal Democrats")),
-             tags$td(libdemSeats),
-             tags$td(libdemVotes),
-             tags$td(libdemShare))),
-           paste(tags$tr(id="ukipRow",
-             tags$th(h4("Ukip")),
-             tags$td(ukipSeats),
-             tags$td(ukipVotes),
-             tags$td(ukipShare)))
-           ))
-    })
+    } else {"Please Select an Input"}
+    
+output$winner <- renderTable({validate(
+      need(input$toryNon+
+            input$greenNon+
+            input$labourNon+
+            input$libdemNon+
+           input$ukipNon == 100, 'Inputs must sum to 100%'))
+outcome <- newData()
+    summary(outcome)},bordered=TRUE,
+    striped=TRUE, rownames = TRUE, colnames=FALSE)
+    
+    #Conservatives
+    output$torySeats <- renderText({
+      sum(values$df$torywin==TRUE)})
+    
+    output$toryVotes <- renderText({
+      formatC(round(sum(values$df$tory),digits=0), format="d", big.mark=',')})
+    
+    output$toryShare <- renderText({paste(
+      round((sum(values$df$tory)/sum(values$df$votes))*100,digits=2),"%",sep="")})
+    
+    output$torySeatChange <- renderText({
+      sum(values$df$torywin==TRUE)-sum(cont2$torywin==TRUE)})
+    
+    output$toryVoteChange <- renderText({
+      formatC(round(sum(values$df$tory)-sum(cont2$tory),digits=0), format="d", big.mark=',')})
+    
+    output$toryShareChange  <- renderText({paste(
+      round(((sum(values$df$tory)/sum(values$df$votes))*100)-((sum(cont2$tory)/sum(cont2$votes)*100)),digits=2),"%",sep="")})
+    #Greens
+    output$greenSeats <- renderText({
+      sum(values$df$greenwin==TRUE)})
+    
+    output$greenVotes <- renderText({
+      formatC(round(sum(values$df$green),digits=0), format="d", big.mark=',')})
+    
+    output$greenShare <- renderText({paste(
+      round((sum(values$df$green)/sum(values$df$votes))*100,digits=2),"%",sep="")})
+    
+    output$greenSeatChange <- renderText({
+      sum(values$df$greenwin==TRUE)-sum(cont2$greenwin==TRUE)})
+    
+    output$greenVoteChange <- renderText({
+      formatC(round(sum(values$df$green)-sum(cont2$green),digits=0), format="d", big.mark=',')})
+    
+    output$greenShareChange  <- renderText({paste(
+      round(((sum(values$df$green)/sum(values$df$votes))*100)-((sum(cont2$green)/sum(cont2$votes)*100)),digits=2),"%",sep="")})
+    #Labour
+    output$labourSeats <- renderText({
+      sum(values$df$labourwin==TRUE)})
+    
+    output$labourVotes <- renderText({
+      formatC(round(sum(values$df$labour),digits=0), format="d", big.mark=',')})
+    
+    output$labourShare <- renderText({paste(
+      round((sum(values$df$labour)/sum(values$df$labour))*100,digits=2),"%",sep="")})
+    
+    output$labourSeatChange <- renderText({
+      sum(values$df$labourwin==TRUE)-sum(cont2$labourwin==TRUE)})
+    
+    output$labourVoteChange <- renderText({
+      formatC(round(sum(values$df$labour)-sum(cont2$labour),digits=0), format="d", big.mark=',')})
+    
+    output$labourShareChange  <- renderText({paste(
+      round(((sum(values$df$labour)/sum(values$df$votes))*100)-((sum(cont2$labour)/sum(cont2$votes)*100)),digits=2),"%",sep="")})
+    #LibDems
+    output$libdemSeats <- renderText({
+      sum(values$df$libdemwin==TRUE)})
+    
+    output$libdemVotes <- renderText({
+      formatC(round(sum(values$df$libdem),digits=0), format="d", big.mark=',')})
+    
+    output$libdemShare <- renderText({paste(
+      round((sum(values$df$libdem)/sum(values$df$libdem))*100,digits=2),"%",sep="")})
+    
+    output$libdemSeatChange <- renderText({
+      sum(values$df$libdemwin==TRUE)-sum(cont2$libdemwin==TRUE)})
+    
+    output$libdemVoteChange <- renderText({
+      formatC(round(sum(values$df$libdem)-sum(cont2$libdem),digits=0), format="d", big.mark=',')})
+    
+    output$libdemShareChange  <- renderText({paste(
+      round(((sum(values$df$libdem)/sum(values$df$votes))*100)-((sum(cont2$libdem)/sum(cont2$votes)*100)),digits=2),"%",sep="")})
+    #Ukip
+    output$ukipSeats <- renderText({
+      sum(values$df$ukipwin==TRUE)})
+    
+    output$ukipVotes <- renderText({
+      formatC(round(sum(values$df$ukip),digits=0), format="d", big.mark=',')})
+    
+    output$ukipShare <- renderText({paste(
+      round((sum(values$df$ukip)/sum(values$df$ukip))*100,digits=2),"%",sep="")})
+    
+    output$ukipSeatChange <- renderText({
+      sum(values$df$ukipwin==TRUE)-sum(cont2$ukipwin==TRUE)})
+    
+    output$ukipVoteChange <- renderText({
+      formatC(round(sum(values$df$ukip)-sum(cont2$ukip),digits=0), format="d", big.mark=',')})
+    
+    output$ukipShareChange  <- renderText({paste(
+      round(((sum(values$df$ukip)/sum(values$df$votes))*100)-((sum(cont2$ukip)/sum(cont2$votes)*100)),digits=2),"%",sep="")})
     
   })
 }
