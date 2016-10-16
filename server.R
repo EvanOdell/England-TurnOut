@@ -9,6 +9,7 @@
 
 library(shiny)
 library(rmarkdown)
+library(ggplot2)
 
 
 cont2 <- readRDS(file = "cont2.rds")
@@ -38,7 +39,8 @@ server <- function(input, output, session){
     ukipwin = cont2$ukipwin,
     winner = cont2$winner,
     spare = cont2$spare,
-    electorate = cont2$electorate
+    electorate = cont2$electorate,
+    votes = cont2$votes
   )
   
   observe({
@@ -123,10 +125,10 @@ server <- function(input, output, session){
                                                 values$df$ukip>values$df$libdem, TRUE,FALSE))
         
         values$df$winner <- as.factor(ifelse(values$df$torywin==TRUE,"Conservatives",
-                                             ifelse(values$df$greenwin==TRUE,"Green",
-                                                    ifelse(values$df$labourwin==TRUE,"Labour",
-                                                           ifelse(values$df$libdemwin==TRUE,"Liberal Democrats",
-                                                                  ifelse(values$df$ukipwin==TRUE,"Ukip", NA))))))      
+                                      ifelse(values$df$greenwin==TRUE,"Green",
+                                      ifelse(values$df$labourwin==TRUE,"Labour",
+                                      ifelse(values$df$libdemwin==TRUE,"Liberal Democrats",
+                                      ifelse(values$df$ukipwin==TRUE,"Ukip", NA))))))      
       })
       
     }else if(input$distro=="Marginality"){
@@ -164,63 +166,90 @@ server <- function(input, output, session){
                                                 values$df$ukip>values$df$libdem, TRUE,FALSE))
         
         values$df$winner <- as.factor(ifelse(values$df$torywin==TRUE,"Conservatives",
-                                             ifelse(values$df$greenwin==TRUE,"Green",
-                                                    ifelse(values$df$labourwin==TRUE,"Labour",
-                                                           ifelse(values$df$libdemwin==TRUE,"Liberal Democrats",
-                                                                  ifelse(values$df$ukipwin==TRUE,"Ukip", NA))))))      
+                                      ifelse(values$df$greenwin==TRUE,"Green",
+                                      ifelse(values$df$labourwin==TRUE,"Labour",
+                                      ifelse(values$df$libdemwin==TRUE,"Liberal Democrats",
+                                      ifelse(values$df$ukipwin==TRUE,"Ukip", NA))))))
       })
     }
     
-    output$winner <- renderTable({validate(
-      need(input$toryNon+
-             input$greenNon+
-             input$labourNon+
-             input$libdemNon+
-             input$ukipNon == 100, 'Inputs must sum to 100%')
+    output$table1 <- renderUI({
+      validate(
+        need(input$toryNon+
+               input$greenNon+
+               input$labourNon+
+               input$libdemNon+
+               input$ukipNon == 100, 'Inputs must sum to 100%')
+      )
+      #Conservatives
+      torySeats <- paste(
+        sum(values$df$torywin==TRUE))
+      toryVotes <- paste(
+        formatC(round(sum(values$df$tory),digits=0), format="d", big.mark=','))
+      toryShare <- paste(
+        round((sum(values$df$tory)/sum(values$df$votes))*100,digits=2),"%",sep="")
+      #Greens
+      greenSeats <- paste(
+        sum(values$df$greenwin==TRUE))
+      greenVotes <- paste(
+        formatC(round(sum(values$df$green),digits=0), format="d", big.mark=','))
+      greenShare <- paste(
+        round((sum(values$df$green)/sum(values$df$votes))*100,digits=2),"%",sep="")
+      #Labour
+      labourSeats <- paste(
+        sum(values$df$labourwin==TRUE))
+      labourVotes <- paste(
+        formatC(round(sum(values$df$labour),digits=0), format="d", big.mark=','))
+      labourShare <- paste(
+        round((sum(values$df$labour)/sum(values$df$votes))*100,digits=2),"%",sep="")
+      #LibDems
+      libdemSeats <- paste(
+        sum(values$df$libdemwin==TRUE))
+      libdemVotes <- paste(
+        formatC(round(sum(values$df$libdem),digits=0), format="d", big.mark=','))
+      libdemShare <- paste(
+        round((sum(values$df$libdem)/sum(values$df$votes))*100,digits=2),"%",sep="")
+      #Ukip
+      ukipSeats <- paste(
+        sum(values$df$ukipwin==TRUE))
+      ukipVotes <- paste(
+        formatC(round(sum(values$df$ukip),digits=0), format="d", big.mark=','))
+      ukipShare <- paste(
+        round((sum(values$df$ukip)/sum(values$df$votes))*100,digits=2),"%",sep="")
       
-    )
-      outcome <- newData()
-      summary(outcome)},bordered=TRUE,
-    striped=TRUE, rownames = TRUE, colnames=FALSE)
-    
-    output$tory <- renderText(
-      formatC(round(sum(values$df$tory),digits=0), format="d", big.mark=',')
-    )
-    output$green <- renderText(
-      formatC(round(sum(values$df$green),digits=0), format="d", big.mark=',')
-    )
-    output$labour <- renderText(
-      formatC(round(sum(values$df$labour),digits=0), format="d", big.mark=',')
-    )
-    output$libdem <- renderText(
-      formatC(round(sum(values$df$libdem),digits=0), format="d", big.mark=',')
-    )
-    output$ukip <- renderText(
-      formatC(round(sum(values$df$ukip),digits=0), format="d", big.mark=',')
-    )
-    output$electorate <- renderText(
-      formatC(round(sum(values$df$electorate),digits=0), format="d", big.mark=',')
-    )
-    
-    output$toryShare <- renderText({paste(round(
-      (sum(values$df$tory)/sum(values$df$electorate))*100,digits=2),"%",sep="")
+      tags$table(HTML(paste(tags$tr(
+            tags$th(""),
+            tags$th("Seats"),
+            tags$th("Votes"),
+            tags$th("Vote Share"))),
+           paste(tags$tr(id="toryRow",
+             tags$th(h4("Conservatives")),
+             tags$td(torySeats),
+             tags$td(toryVotes),
+             tags$td(toryShare))),
+           paste(tags$tr(id="greenRow",
+             tags$th(h4("Green")),
+             tags$td(greenSeats),
+             tags$td(greenVotes),
+             tags$td(greenShare))),
+           paste(tags$tr(id="labourRow",
+             tags$th(h4("Labour")),
+             tags$td(labourSeats),
+             tags$td(labourVotes),
+             tags$td(labourShare))),
+           paste(tags$tr(id="libDemRow",
+             tags$th(h4("Liberal Democrats")),
+             tags$td(libdemSeats),
+             tags$td(libdemVotes),
+             tags$td(libdemShare))),
+           paste(tags$tr(id="ukipRow",
+             tags$th(h4("Ukip")),
+             tags$td(ukipSeats),
+             tags$td(ukipVotes),
+             tags$td(ukipShare)))
+           ))
     })
     
-    output$greenShare <- renderText({paste(round(
-      (sum(values$df$green)/sum(values$df$electorate))*100,digits=2),"%",sep="")
-    })
-    
-    output$labourShare <- renderText({paste(round(
-      (sum(values$df$labour)/sum(values$df$electorate))*100,digits=2),"%",sep="")
-    })
-    
-    output$libdemShare <- renderText({paste(round(
-      (sum(values$df$libdem)/sum(values$df$electorate))*100,digits=2),"%",sep="")
-    })
-    
-    output$ukipShare <- renderText({paste(round(
-      (sum(values$df$ukip)/sum(values$df$electorate))*100,digits=2),"%",sep="")
-    })
   })
 }
 
