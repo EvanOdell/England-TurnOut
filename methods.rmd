@@ -32,8 +32,6 @@ The model uses 532 constituencies in England (all English constituencies exlcudi
 
 On the face of it, activating non-voters is a sound strategy for Labour. It worked wonders for Barack Obama in 2008, and it is a political trope that higher turnout benefits opposition parties (because the electorate desires change) and left-of-centre parties (who enjoy strong support amongst the young and the poor, who are less likely to vote). While the constituencies with the lowest turnout tend to vote Labour, a uniform increase in turnout could prove effective in marginal seats. 
 
-If you have any questions or comments about the model, or have any improvements you would like to see, please [drop me an email](mailto:evanodell91@gmail.com). The code and data used in this model is on <a href="https://github.com/EvanOdell/England-TurnOut" target="_blank">GitHub</a>.
-
 ### 2015 General Election Seats
 
 Party  | Seats
@@ -44,4 +42,9 @@ Labour | 206
 Liberal Democrats | 6
 Ukip | 1
 Speaker | 1
+
+
+
+**If you have any questions or comments about the model, or have any improvements you would like to see, please [drop me an email](mailto:evanodell91@gmail.com). The code and data used in this model is on <a href="https://github.com/EvanOdell/England-TurnOut" target="_blank">GitHub</a>.**
+
 
