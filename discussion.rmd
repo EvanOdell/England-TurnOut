@@ -1,0 +1,26 @@
+---
+title: "discussion"
+author: "Evan Odell"
+date: "12 October 2016"
+output: html_document
+---
+
+# Discussion
+
+### Rationale
+
+Understanding voter turnout is an important and often overlooked element of the electoral process. Pollsters need to predict which voters are and are not likely to vote, political parties need to ensure that as many of their supporters show up to vote as possible, and sometimes take steps, such as introducing stricter voter ID laws or restricting early voting, to build barriers to voting by supporters of other parties. I built this model to explore how changes in turnout can effect electoral outcomes.
+
+                          
+### Implications for Labour                                                 
+
+The second rationale behind this model was to demonstrate the relative futility of Labour using increased turnout as an electoral strategy, at least on a national scale. The discussion below uses the default assumptions of the party choices of non-votes. Please note that these assumptions are based on the proposed reduction in the number of UK constituencies not going ahead.
+
+Assuming a uniform distribution of turnout changes, a massive 20 percentage point increase in turnout, by far the highest post-war election turnout, gains Labour 23 seats in England. A 10 percentage point increase, about as large a change as could reasonably be expected, results in a gain of 15 English constituencies for Labour, 14 of them from the Conservatives and 1 from the Liberal Democrats. This would be enough to overturn the government's majority, but not enough to produce a Labour government, assuming no changes in Wales, Scotland or Northern Ireland.
+
+Changing the distribution of turnout to be greater in constituencies with lower turnout does not change the overall distribution of seats from the uniform distribution.
+
+Increasing turnout in marginal seats does play to Labour's benefit. A national increase of 10 percentage points would result in a 20 percentage point increase in the most marginal seat, and a gain of 30 seats, 3 at the expense of the Liberal Democrats and 27 from the Conservatives.
+
+
+
