@@ -39,6 +39,7 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                                          selected = "Uniform"),
                                              h4("Results"),
                                                     tableOutput("winner")
+                                                   
                                              ),
                                       column(6,
                                              numericInput("toryNon", "% of Non-Voters Supporting the Conservatives",
@@ -115,11 +116,21 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                       )
                                       ) 
                                     ))
+                                    
                                   ),
                                   br(),
                                   br()
                          ),
-                         
+                        
+                         tabPanel("Graph",
+                                  fluidPage(
+                                    fluidRow(
+                                      column(10,
+                                             plotOutput("plot"),
+                                             tableOutput("winner"))
+                                    ))
+                         ),
+                            
                          tabPanel("Methods",
                                 fluidPage(
                                   fluidRow(

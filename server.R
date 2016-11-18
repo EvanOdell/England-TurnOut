@@ -10,7 +10,8 @@
 library(shiny)
 library(rmarkdown)
 library(ggplot2)
-
+library(dplyr)
+library(scales)
 
 cont2 <- readRDS(file = "cont2.rds")
 
@@ -178,10 +179,66 @@ output$winner <- renderTable({validate(
             input$greenNon+
             input$labourNon+
             input$libdemNon+
-           input$ukipNon == 100, 'Inputs must sum to 100%'))
+            input$ukipNon == 100, 'Inputs must sum to 100%'))
 outcome <- newData()
     summary(outcome)},bordered=TRUE,
     striped=TRUE, rownames = TRUE, colnames=FALSE)
+
+output$plot <- renderPlot({
+   data2 <- count(values$df, winner)
+   
+   barcolour <- c("#0087dc", #Tory
+                  "#6AB023", #Green
+                  "#DC241f", #Labour
+                  "#FDBB30", #Libdem
+                  "#70147A" #Ukip
+                  )
+   
+   data3 <- data.frame(
+     "Conservatives" = sum(values$df$torywin==TRUE),
+     "Greens" = sum(values$df$greenwin==TRUE),
+     "Labour" = sum(values$df$labourwin==TRUE),
+     "Liberal Democrats" = sum(values$df$libdemwin==TRUE),
+     "Ukip" = sum(values$df$ukipwin==TRUE)
+   )
+   
+   data4 <- data.frame(winner=c("Conservatives",
+                                "Green", "Labour",
+                                "Liberal Democrats",
+                                "Ukip"),seats=c(sum(values$df$torywin==TRUE),
+                                                sum(values$df$greenwin==TRUE),
+                                                sum(values$df$labourwin==TRUE),
+                                                sum(values$df$libdemwin==TRUE),
+                                                sum(values$df$ukipwin==TRUE)))
+   
+   data6 <- data.frame(winner=c("Conservatives",
+                                "Green", "Labour",
+                                "Liberal Democrats",
+                                "Ukip"),seats=c(sum(cont2$torywin==TRUE),
+                                                sum(cont2$greenwin==TRUE),
+                                                sum(cont2$labourwin==TRUE),
+                                                sum(cont2$libdemwin==TRUE),
+                                                sum(cont2$ukipwin==TRUE)))
+   
+   
+   
+   parties <- c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip")
+      
+   barcolour3 <- c("Conservatives" = "#0087dc",
+                  "Green" = "#6AB023", #Green
+                  "Labour" = "#DC241f", #Labour
+                  "Liberal Democrats" = "#FDBB30", #Libdem
+                  "Ukip" = "#70147A" #Ukip
+   )
+   
+    gg <- ggplot(data4, aes(x = winner, y = seats, fill=parties)) + geom_col(aes(fill=factor(parties))) + scale_fill_manual(values = barcolour3, breaks = parties) + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold")) + scale_x_discrete(limits = c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip"), drop=FALSE)  + xlab("Party") + ylab("Seats in England") + guides(fill=FALSE)
+    
+    print(gg)
+      })
+
+
+
+renderPlot({})
     
     #Conservatives
     output$torySeats <- renderText({
@@ -227,7 +284,7 @@ outcome <- newData()
       formatC(round(sum(values$df$labour),digits=0), format="d", big.mark=',')})
     
     output$labourShare <- renderText({paste(
-      round((sum(values$df$labour)/sum(values$df$labour))*100,digits=2),"%",sep="")})
+      round((sum(values$df$labour)/sum(values$df$votes))*100,digits=2),"%",sep="")})
     
     output$labourSeatChange <- renderText({
       sum(values$df$labourwin==TRUE)-sum(cont2$labourwin==TRUE)})
@@ -245,7 +302,7 @@ outcome <- newData()
       formatC(round(sum(values$df$libdem),digits=0), format="d", big.mark=',')})
     
     output$libdemShare <- renderText({paste(
-      round((sum(values$df$libdem)/sum(values$df$libdem))*100,digits=2),"%",sep="")})
+      round((sum(values$df$libdem)/sum(values$df$votes))*100,digits=2),"%",sep="")})
     
     output$libdemSeatChange <- renderText({
       sum(values$df$libdemwin==TRUE)-sum(cont2$libdemwin==TRUE)})
@@ -263,7 +320,7 @@ outcome <- newData()
       formatC(round(sum(values$df$ukip),digits=0), format="d", big.mark=',')})
     
     output$ukipShare <- renderText({paste(
-      round((sum(values$df$ukip)/sum(values$df$ukip))*100,digits=2),"%",sep="")})
+      round((sum(values$df$ukip)/sum(values$df$votes))*100,digits=2),"%",sep="")})
     
     output$ukipSeatChange <- renderText({
       sum(values$df$ukipwin==TRUE)-sum(cont2$ukipwin==TRUE)})
