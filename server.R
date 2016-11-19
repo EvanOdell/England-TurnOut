@@ -12,6 +12,7 @@ library(rmarkdown)
 library(ggplot2)
 library(dplyr)
 library(scales)
+library(SciencesPo)
 
 cont2 <- readRDS(file = "cont2.rds")
 
@@ -23,7 +24,7 @@ cont2 <- readRDS(file = "cont2.rds")
 
 # Define server logic 
 server <- function(input, output, session){
-  
+
   values <- reactiveValues(df=NULL)
   values$df <- data.frame(
     constituency = cont2$constituency,
@@ -43,8 +44,11 @@ server <- function(input, output, session){
     electorate = cont2$electorate,
     votes = cont2$votes
   )
+
+
   
   observe({
+
     if(input$distro=="Uniform"){#Distribution of turnout increases or decreases are evenly spread across all constituencies
       #If turnout is equal to greater than 65.8
       newData <- reactive({
@@ -184,24 +188,7 @@ outcome <- newData()
     summary(outcome)},bordered=TRUE,
     striped=TRUE, rownames = TRUE, colnames=FALSE)
 
-output$plot <- renderPlot({
-   data2 <- count(values$df, winner)
-   
-   barcolour <- c("#0087dc", #Tory
-                  "#6AB023", #Green
-                  "#DC241f", #Labour
-                  "#FDBB30", #Libdem
-                  "#70147A" #Ukip
-                  )
-   
-   data3 <- data.frame(
-     "Conservatives" = sum(values$df$torywin==TRUE),
-     "Greens" = sum(values$df$greenwin==TRUE),
-     "Labour" = sum(values$df$labourwin==TRUE),
-     "Liberal Democrats" = sum(values$df$libdemwin==TRUE),
-     "Ukip" = sum(values$df$ukipwin==TRUE)
-   )
-   
+output$seatPlot <- renderPlot({
    data4 <- data.frame(winner=c("Conservatives",
                                 "Green", "Labour",
                                 "Liberal Democrats",
@@ -210,18 +197,7 @@ output$plot <- renderPlot({
                                                 sum(values$df$labourwin==TRUE),
                                                 sum(values$df$libdemwin==TRUE),
                                                 sum(values$df$ukipwin==TRUE)))
-   
-   data6 <- data.frame(winner=c("Conservatives",
-                                "Green", "Labour",
-                                "Liberal Democrats",
-                                "Ukip"),seats=c(sum(cont2$torywin==TRUE),
-                                                sum(cont2$greenwin==TRUE),
-                                                sum(cont2$labourwin==TRUE),
-                                                sum(cont2$libdemwin==TRUE),
-                                                sum(cont2$ukipwin==TRUE)))
-   
-   
-   
+
    parties <- c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip")
       
    barcolour3 <- c("Conservatives" = "#0087dc",
@@ -231,14 +207,38 @@ output$plot <- renderPlot({
                   "Ukip" = "#70147A" #Ukip
    )
    
-    gg <- ggplot(data4, aes(x = winner, y = seats, fill=parties)) + geom_col(aes(fill=factor(parties))) + scale_fill_manual(values = barcolour3, breaks = parties) + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold")) + scale_x_discrete(limits = c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip"), drop=FALSE)  + xlab("Party") + ylab("Seats in England") + guides(fill=FALSE)
+    gg <- ggplot(data4, aes(x = winner, y = seats, fill=factor(parties), label = seats)) + geom_bar(stat = "identity") + scale_fill_manual(values = barcolour3, breaks = parties) + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold")) + scale_x_discrete(limits = c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip"), drop=FALSE)  + xlab("Party") + ylab("Seats in England") + geom_text(aes(y = seats + 0.1), position = position_dodge(0.9), vjust = 0, size = 6)+ guides(fill=FALSE)
     
     print(gg)
       })
 
 
 
-renderPlot({})
+output$votePlot <- renderPlot({
+  
+  data6 <- data.frame(winner=c("Conservatives",
+                               "Green", "Labour",
+                               "Liberal Democrats",
+                               "Ukip"),votes=c(sum(values$df$tory),
+                                               sum(values$df$green),
+                                               sum(values$df$labour),
+                                               sum(values$df$libdem),
+                                               sum(values$df$ukip)))
+  
+  parties <- c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip")
+  
+  barcolour3 <- c("Conservatives" = "#0087dc",
+                  "Green" = "#6AB023", #Green
+                  "Labour" = "#DC241f", #Labour
+                  "Liberal Democrats" = "#FDBB30", #Libdem
+                  "Ukip" = "#70147A" #Ukip
+  )
+  
+  gg3 <- ggplot(data6, aes(x = winner, y = votes, fill=factor(parties), label = votes)) + geom_bar(stat = "identity") + scale_fill_manual(values = barcolour3, breaks = parties) + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold")) + scale_x_discrete(limits = c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip"), drop=FALSE)  + xlab("Party") + ylab("Votes in England") + geom_text(aes(label= paste0(formatC(round(votes),format="d", big.mark=','))), position = position_dodge(0.9), vjust = 0, size = 6)+ guides(fill=FALSE)
+  
+  print(gg3)
+
+})
     
     #Conservatives
     output$torySeats <- renderText({
@@ -331,7 +331,83 @@ renderPlot({})
     output$ukipShareChange  <- renderText({paste(
       round(((sum(values$df$ukip)/sum(values$df$votes))*100)-((sum(cont2$ukip)/sum(cont2$votes)*100)),digits=2),"%",sep="")})
     
+
+    
+    ### PROPORTONALITY
+    
+    propData <- data.frame(party=c("Conservatives",
+                                   "Green", "Labour",
+                                   "Liberal Democrats",
+                                   "Ukip"),
+                           votes=c(sum(values$df$tory),
+                                   sum(values$df$green),
+                                   sum(values$df$labour),
+                                   sum(values$df$libdem),
+                                   sum(values$df$ukip)),
+                           pvotes=c((sum(values$df$tory)/sum(values$df$votes))*100,
+                                    (sum(values$df$green)/sum(values$df$votes))*100,
+                                    (sum(values$df$labour)/sum(values$df$votes))*100,
+                                    (sum(values$df$libdem)/sum(values$df$votes))*100,
+                                    (sum(values$df$ukip)/sum(values$df$votes))*100),
+                           seats=c(sum(values$df$torywin==TRUE),
+                                   sum(values$df$greenwin==TRUE),
+                                   sum(values$df$labourwin==TRUE),
+                                   sum(values$df$libdemwin==TRUE),
+                                   sum(values$df$ukipwin==TRUE)),
+                           pseats=c((sum(values$df$torywin==TRUE)/532)*100,
+                                    (sum(values$df$greenwin==TRUE)/532)*100,
+                                    (sum(values$df$labourwin==TRUE)/532)*100,
+                                    (sum(values$df$libdemwin==TRUE)/532)*100,
+                                    (sum(values$df$ukipwin==TRUE)/532)*100))
+  
+    
+    switch(input$propType,
+           
+           "Gallagher" = output$propOutput <-renderText({#1
+             prop1 <-  with(propData, Proportionality(pvotes, pseats, index = "Gallagher"))
+           }),
+           
+           "Rae" = output$propOutput <-renderText({#2
+             prop2 <-  with(propData, Proportionality(pvotes, pseats, index = "Rae"))
+           }),
+           
+           "Loosemore-Hanby" = output$propOutput <-renderText({#3
+             prop3 <-  with(propData, Proportionality(pvotes, pseats, index = "Loosemore-Hanby"))
+           }),
+           
+           "Rose" = output$propOutput <-renderText({#6
+             prop6 <-  with(propData, Proportionality(pvotes, pseats, index = "Rose"))
+           }),
+           
+           "Sainte-Lague" = output$propOutput <-renderText({#7
+             prop7 <-  with(propData, Proportionality(pvotes, pseats, index = "Sainte-Lague"))
+           }),
+           
+           "Grofman" = output$propOutput <-renderText({#8
+             prop8 <-  with(propData, Proportionality(pvotes, pseats, index = "Grofman"))
+           }),
+           
+           "Lijphart" = output$propOutput <-renderText({#9
+             prop9 <-  with(propData, Proportionality(pvotes, pseats, index = "Lijphart"))
+           }),
+           
+           "Farina" = output$propOutput <-renderText({#10
+             prop10 <-  with(propData, Proportionality(pvotes, pseats, index = "Farina"))
+           }),
+           
+           "Cox-Shugart" = output$propOutput <-renderText({#11
+             prop11 <-  with(propData, Proportionality(pvotes, pseats, index = "Cox-Shugart"))
+           }),
+           
+           "D'Hondt" = output$propOutput <-renderText({#12
+             prop12 <-  with(propData, Proportionality(pvotes, pseats, index = "DHondt"))
+           })
+    )
+    
+    
+  
   })
+         
 }
 
 
