@@ -20,6 +20,31 @@ There are three distribution options available.
 
 3. A distribution with larger effects in marginal constituencies. Turnout is weighted on a range of 0-2,so that more marginal constituencies will see greater changes in turnout, depending on overall turnout, and the least marginal constituency will see no change in turnout.
 
+
+### Measures of Proportionality 
+
+There are 10 different measures of electoral proportionality available in this model, taken from the `SciencesPo` package. They are:
+
+* Cox-Shugart
+
+* D'Hont
+
+* Farina
+
+* Lijphart
+
+* Grofman
+
+* Sainte-Lague
+
+* Rose
+
+* Loosemore-Hanby
+
+* Rae
+
+* Gallagher
+
 ### Rationale
 
 The rationale behind this model comes from [this broadcast](http://www.bbc.co.uk/programmes/b06950lm/broadcasts) of the BBC radio programme *More or Less*, which looked at the effectiveness of the political strategy of targetting non-voters, particularly in the context of UK Labour Party leader Jeremy Corbyn, whose strategy in both internal Labour party elections involved activating new Labour Party members, and whose likely strategy in the next general election would also involve increasing turnout. The broadcast presented some assumptions on who non-voters would back (which I have borrowed), but did not attempt to model what changes in electoral turnout could do to seat distribution.
