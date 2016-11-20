@@ -7,7 +7,7 @@ output: html_document
 
 # Methodology
 
-A [Shiny](http://shiny.rstudio.com/) tool to estimate what changes in turnout do to general election results in England. The default assumption is that, if they voted, 50% of non-voters would back Labour, 20% would vote Conservative, 15% would vote Ukip, 10% would support the Liberal Democrats and 5% would vote Green. These inputs can be changed, so long as they add up to 100%. Turnout is capped at 88.5% and can be no less than 17.2%, so that no constituency can have zero turnout or turnout over 100%. Turnout in England in the 2015 general election was 65.8%. [The highest post-war turnout in England was 84.4% in the 1950 general election.](http://www.ukpolitical.info/Turnout45.htm)
+A [Shiny](http://shiny.rstudio.com/) tool to estimate what changes in turnout do to general election results in England. The default assumption is that, if they voted, 50% of non-voters would back Labour, 20% would vote Conservative, 15% would vote Ukip, 10% would support the Liberal Democrats and 5% would vote Green. These inputs can be changed, so long as they add up to 100%. Turnout is capped at 88.5% and can be no less than 40%, so that no constituency can have zero turnout or turnout over 100%. Turnout lower than 40% using a uniform swing also results in parties achieving a negative number of votes in some constituencies. Turnout in England in the 2015 general election was 65.8%. [The highest post-war turnout in England was 84.4% in the 1950 general election.](http://www.ukpolitical.info/Turnout45.htm)
 
 
 ### Distributions
@@ -24,11 +24,11 @@ There are three distribution options available.
 
 The rationale behind this model comes from [this broadcast](http://www.bbc.co.uk/programmes/b06950lm/broadcasts) of the BBC radio programme *More or Less*, which looked at the effectiveness of the political strategy of targetting non-voters, particularly in the context of UK Labour Party leader Jeremy Corbyn, whose strategy in both internal Labour party elections involved activating new Labour Party members, and whose likely strategy in the next general election would also involve increasing turnout. The broadcast presented some assumptions on who non-voters would back (which I have borrowed), but did not attempt to model what changes in electoral turnout could do to seat distribution.
 
-The model uses 532 constituencies in England (all English constituencies exlcuding Buckingham, represented by speaker John Bercow and not contested by Labour or the Liberal Democrats), and only includes votes for the five parties included in the model. I focused only on England for the sake of simplicity, and because Labour will have to win seats from the Conservatives in England to form a government.
+The model uses 532 constituencies in England (all English constituencies exlcuding Buckingham, represented by speaker John Bercow and not contested by Labour or the Liberal Democrats), and only includes votes for the five parties included in the model. I focused only on England for the sake of simplicity, and because Labour would have to win seats from the Conservatives in England to form a government.
 
 On the face of it, activating non-voters is a sound strategy for Labour. It worked wonders for Barack Obama in 2008, and it is a political trope that higher turnout benefits opposition parties (because the electorate desires change) and left-of-centre parties (who enjoy strong support amongst the young and the poor, who are less likely to vote). While the constituencies with the lowest turnout tend to vote Labour, a uniform increase in turnout could prove effective in marginal seats. 
 
-### 2015 General Election Seats
+### 2015 General Election Seats in England
 
 Party  | Seats
 ------------- | -------------

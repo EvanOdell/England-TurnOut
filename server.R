@@ -52,7 +52,7 @@ server <- function(input, output, session){
     if(input$distro=="Uniform"){#Distribution of turnout increases or decreases are evenly spread across all constituencies
       #If turnout is equal to greater than 65.8
       newData <- reactive({
-        values$df$labour <- cont2$labour+ ((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$labourNon/100))
+        values$df$labour <- cont2$labour + ((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$labourNon/100))
         values$df$tory <- cont2$tory + ((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$toryNon/100))
         values$df$green <- cont2$green  + ((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$greenNon/100))
         values$df$libdem <- cont2$libdem +((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$libdemNon/100))

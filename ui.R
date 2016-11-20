@@ -32,9 +32,10 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                       column(4,
                                              
                                              sliderInput(inputId = "turnOut", label = "Voter Turnout", 
-                                                         min=17.2, max=88.5, value=65.8, 
+                                                         min=40, max=88.5, value=65.8, 
                                                          step = 0.1, ticks = TRUE, animate = FALSE,
                                                          width = NULL),
+                                             
                                              selectInput(inputId = "distro", 
                                                          label = "Select a distribution",
                                                          choices = c("Uniform", "Turnout", "Marginality"),
