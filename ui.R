@@ -70,77 +70,76 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                              plotOutput("seatPlot", height = "375px"),
                                              h3("Votes"),
                                              plotOutput("votePlot", height = "375px")),
-                                      h4("Results and Changes"),
-                                      HTML(paste(
-                                        tags$table(
-                                          tags$tr(
-                                            tags$th(""),
-                                            tags$th("Seats"),
-                                            tags$th("Seat Share"),
-                                            tags$th("Votes"),
-                                            tags$th("Vote Share"),
-                                            tags$th("Seat Change"),
-                                            tags$th("Votes Change"),
-                                            tags$th("Vote Share Change")),
-                                          tags$tr(id="toryRow",
-                                                  tags$th(h4("Conservatives")),
-                                                  tags$td(textOutput("torySeats")),
-                                                  tags$td(textOutput("torySeatShare")),
-                                                  tags$td(textOutput("toryVotes")),
-                                                  tags$td(textOutput("toryShare")),
-                                                  tags$td(textOutput("torySeatChange")),
-                                                  tags$td(textOutput("toryVoteChange")),
-                                                  tags$td(textOutput("toryShareChange"))
-                                          ),
-                                          tags$tr(id="greenRow",
-                                                  tags$th(h4("Green")),
-                                                  tags$td(textOutput("greenSeats")),
-                                                  tags$td(textOutput("greenSeatShare")),
-                                                  tags$td(textOutput("greenVotes")),
-                                                  tags$td(textOutput("greenShare")),
-                                                  tags$td(textOutput("greenSeatChange")),
-                                                  tags$td(textOutput("greenVoteChange")),
-                                                  tags$td(textOutput("greenShareChange"))
-                                          ),
-                                          tags$tr(id="labourRow",
-                                                  tags$th(h4("Labour")),
-                                                  tags$td(textOutput("labourSeats")),
-                                                  tags$td(textOutput("labourSeatShare")),
-                                                  tags$td(textOutput("labourVotes")),
-                                                  tags$td(textOutput("labourShare")),
-                                                  tags$td(textOutput("labourSeatChange")),
-                                                  tags$td(textOutput("labourVoteChange")),
-                                                  tags$td(textOutput("labourShareChange"))
-                                          ),
-                                          tags$tr(id="libDemRow",
-                                                  tags$th(h4("Liberal Democrats")),
-                                                  tags$td(textOutput("libdemSeats")),
-                                                  tags$td(textOutput("libdemSeatShare")),
-                                                  tags$td(textOutput("libdemVotes")),
-                                                  tags$td(textOutput("libdemShare")),
-                                                  tags$td(textOutput("libdemSeatChange")),
-                                                  tags$td(textOutput("libdemVoteChange")),
-                                                  tags$td(textOutput("libdemShareChange"))
-                                          ),
-                                          tags$tr(id="ukipRow",
-                                                  tags$th(h4("Ukip")),
-                                                  tags$td(textOutput("ukipSeats")),
-                                                  tags$td(textOutput("ukipSeatShare")),
-                                                  tags$td(textOutput("ukipVotes")),
-                                                  tags$td(textOutput("ukipShare")),
-                                                  tags$td(textOutput("ukipSeatChange")),
-                                                  tags$td(textOutput("ukipVoteChange")),
-                                                  tags$td(textOutput("ukipShareChange"))
-                                          )
-                                        )
-                                      )
-                                      )
                                       br()
                                     ),
                                     
                                     fluidRow(
                                       column(6, offset=4,
-                                             
+                                             h4("Results and Changes"),
+                                             HTML(paste(
+                                               tags$table(
+                                                 tags$tr(
+                                                   tags$th(""),
+                                                   tags$th("Seats"),
+                                                   tags$th("Seat Share"),
+                                                   tags$th("Votes"),
+                                                   tags$th("Vote Share"),
+                                                   tags$th("Seat Change"),
+                                                   tags$th("Votes Change"),
+                                                   tags$th("Vote Share Change")),
+                                                 tags$tr(id="toryRow",
+                                                         tags$th(h4("Conservatives")),
+                                                         tags$td(textOutput("torySeats")),
+                                                         tags$td(textOutput("torySeatShare")),
+                                                         tags$td(textOutput("toryVotes")),
+                                                         tags$td(textOutput("toryShare")),
+                                                         tags$td(textOutput("torySeatChange")),
+                                                         tags$td(textOutput("toryVoteChange")),
+                                                         tags$td(textOutput("toryShareChange"))
+                                                 ),
+                                                 tags$tr(id="greenRow",
+                                                         tags$th(h4("Green")),
+                                                         tags$td(textOutput("greenSeats")),
+                                                         tags$td(textOutput("greenSeatShare")),
+                                                         tags$td(textOutput("greenVotes")),
+                                                         tags$td(textOutput("greenShare")),
+                                                         tags$td(textOutput("greenSeatChange")),
+                                                         tags$td(textOutput("greenVoteChange")),
+                                                         tags$td(textOutput("greenShareChange"))
+                                                 ),
+                                                 tags$tr(id="labourRow",
+                                                         tags$th(h4("Labour")),
+                                                         tags$td(textOutput("labourSeats")),
+                                                         tags$td(textOutput("labourSeatShare")),
+                                                         tags$td(textOutput("labourVotes")),
+                                                         tags$td(textOutput("labourShare")),
+                                                         tags$td(textOutput("labourSeatChange")),
+                                                         tags$td(textOutput("labourVoteChange")),
+                                                         tags$td(textOutput("labourShareChange"))
+                                                 ),
+                                                 tags$tr(id="libDemRow",
+                                                         tags$th(h4("Liberal Democrats")),
+                                                         tags$td(textOutput("libdemSeats")),
+                                                         tags$td(textOutput("libdemSeatShare")),
+                                                         tags$td(textOutput("libdemVotes")),
+                                                         tags$td(textOutput("libdemShare")),
+                                                         tags$td(textOutput("libdemSeatChange")),
+                                                         tags$td(textOutput("libdemVoteChange")),
+                                                         tags$td(textOutput("libdemShareChange"))
+                                                 ),
+                                                 tags$tr(id="ukipRow",
+                                                         tags$th(h4("Ukip")),
+                                                         tags$td(textOutput("ukipSeats")),
+                                                         tags$td(textOutput("ukipSeatShare")),
+                                                         tags$td(textOutput("ukipVotes")),
+                                                         tags$td(textOutput("ukipShare")),
+                                                         tags$td(textOutput("ukipSeatChange")),
+                                                         tags$td(textOutput("ukipVoteChange")),
+                                                         tags$td(textOutput("ukipShareChange"))
+                                                 )
+                                               )
+                                             )
+                                             )
                                       )),
                                     br()
                                     
