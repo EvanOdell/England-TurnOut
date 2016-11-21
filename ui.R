@@ -67,9 +67,9 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                       ),
                                       column(6,
                                              h3("Seats"),
-                                             plotOutput("seatPlot", height = "375px"),
+                                             plotOutput("seatPlot", height = "425px"),
                                              h3("Votes"),
-                                             plotOutput("votePlot", height = "375px")),
+                                             plotOutput("votePlot", height = "425px")),
                                       br()
                                     ),
                                     
