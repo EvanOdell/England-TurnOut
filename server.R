@@ -295,7 +295,7 @@ server <- function(input, output, session){
       sum(values$df$torywin==TRUE)})
     
     output$torySeatShare <- renderText({paste(
-      round((sum(values$df$torywin==TRUE)/532)*100, digits=2),"%",sep="") })
+      round((sum(values$df$torywin==TRUE)/532)*100, digits=2),"%",sep="")})
     
     output$toryVotes <- renderText({
       formatC(round(sum(values$df$tory),digits=0), format="d", big.mark=',')})
@@ -315,8 +315,8 @@ server <- function(input, output, session){
     output$greenSeats <- renderText({
       sum(values$df$greenwin==TRUE)})
     
-    output$greenSeatShare <- renderText({
-      (sum(values$df$greenwin==TRUE))/532})
+    output$greenSeatShare <- renderText({paste(
+      round((sum(values$df$greenwin==TRUE)/532)*100, digits=2),"%",sep="")})
     
     output$greenVotes <- renderText({
       formatC(round(sum(values$df$green),digits=0), format="d", big.mark=',')})
@@ -336,8 +336,8 @@ server <- function(input, output, session){
     output$labourSeats <- renderText({
       sum(values$df$labourwin==TRUE)})
     
-    output$labourSeatShare <- renderText({
-      (sum(values$df$labourwin==TRUE))/532})
+    output$labourSeatShare <- renderText({paste(
+      round((sum(values$df$labourwin==TRUE)/532)*100, digits=2),"%",sep="")})
     
     output$labourVotes <- renderText({
       formatC(round(sum(values$df$labour),digits=0), format="d", big.mark=',')})
@@ -357,8 +357,8 @@ server <- function(input, output, session){
     output$libdemSeats <- renderText({
       sum(values$df$libdemwin==TRUE)})
     
-    output$libdemSeatShare <- renderText({
-      (sum(values$df$libdemwin==TRUE))/532})
+    output$libdemSeatShare <- renderText({paste(
+      round((sum(values$df$libdemwin==TRUE)/532)*100, digits=2),"%",sep="")})
     
     output$libdemVotes <- renderText({
       formatC(round(sum(values$df$libdem),digits=0), format="d", big.mark=',')})
@@ -378,8 +378,8 @@ server <- function(input, output, session){
     output$ukipSeats <- renderText({
       sum(values$df$ukipwin==TRUE)})
     
-    output$ukipSeatShare <- renderText({
-      (sum(values$df$ukipwin==TRUE))/532})
+    output$ukipSeatShare <- renderText({paste(
+      round((sum(values$df$ukipwin==TRUE)/532)*100, digits=2),"%",sep="")})
     
     output$ukipVotes <- renderText({
       formatC(round(sum(values$df$ukip),digits=0), format="d", big.mark=',')})
