@@ -74,7 +74,7 @@ server <- function(input, output, session){
         values$df$libdem <- ifelse(values$df$libdem < 0, 0, values$df$libdem)
         values$df$ukip <- cont2$ukip + ((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$ukipNon/100))
         values$df$ukip <- ifelse(values$df$ukip < 0, 0, values$df$ukip)
-        values$df$votes <- cont2$votes + (((input$turnOut - 65.8)/100)*cont2$electorate)
+        values$df$votes <- values$df$tory + values$df$labour + values$df$green + values$df$libdem + values$df$ukip
         values$df$labourwin <- as.factor(ifelse(values$df$labour>values$df$tory &
                                                   values$df$labour>values$df$green &
                                                   values$df$labour>values$df$libdem & 
@@ -129,7 +129,7 @@ server <- function(input, output, session){
         values$df$libdem <- ifelse(values$df$libdem < 0, 0, values$df$libdem)
         values$df$ukip <- cont2$ukip + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$ukipNon/100))*cont2$turnStand)
         values$df$ukip <- ifelse(values$df$ukip < 0, 0, values$df$ukip)
-        values$df$votes <- cont2$votes + ((((input$turnOut - 65.8)/100)*cont2$electorate)*cont2$turnStand)
+        values$df$votes <- values$df$tory + values$df$labour + values$df$green + values$df$libdem + values$df$ukip
         values$df$labourwin <- as.factor(ifelse(values$df$labour>values$df$tory &
                                                   values$df$labour>values$df$green &
                                                   values$df$labour>values$df$libdem & 
@@ -180,7 +180,7 @@ server <- function(input, output, session){
         values$df$libdem <- ifelse(values$df$libdem < 0, 0, values$df$libdem)
         values$df$ukip <- cont2$ukip + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$ukipNon/100))*cont2$marginStand)
         values$df$ukip <- ifelse(values$df$ukip < 0, 0, values$df$ukip)
-        values$df$votes <- cont2$votes + ((((input$turnOut - 65.8)/100)*cont2$electorate)*cont2$marginStand)
+        values$df$votes <- values$df$tory + values$df$labour + values$df$green + values$df$libdem + values$df$ukip
         
         values$df$labourwin <- as.factor(ifelse(values$df$labour>values$df$tory &
                                                   values$df$labour>values$df$green &
