@@ -141,7 +141,6 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                              )
                                              )
                                       )),
-                                    br(),
                                     br()
                                     
                                   )
