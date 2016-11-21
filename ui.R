@@ -136,14 +136,8 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                         )
                                       )
                                       )
-                                      br()
-                                    ),
-                                    
-                                    fluidRow(
-                                      column(6, offset=4,
-                                             
-                                      )),
-                                    br()
+                                    )
+                                   
                                     
                                   )
                          ),
