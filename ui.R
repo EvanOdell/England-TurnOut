@@ -70,7 +70,6 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                              plotOutput("seatPlot", height = "375px"),
                                              h3("Votes"),
                                              plotOutput("votePlot", height = "375px")),
-                                      
                                       h4("Results and Changes"),
                                       HTML(paste(
                                         tags$table(
@@ -136,8 +135,14 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                         )
                                       )
                                       )
-                                    )
-                                   
+                                      br()
+                                    ),
+                                    
+                                    fluidRow(
+                                      column(6, offset=4,
+                                             
+                                      )),
+                                    br()
                                     
                                   )
                          ),
