@@ -7,7 +7,9 @@ output: html_document
 
 # Methodology
 
-A [Shiny](http://shiny.rstudio.com/) tool to estimate what changes in turnout do to general election results in England. The default assumption is that, if they voted, 50% of non-voters would back Labour, 20% would vote Conservative, 15% would vote Ukip, 10% would support the Liberal Democrats and 5% would vote Green. These inputs can be changed, so long as they add up to 100%. Turnout is capped at 88.5% and can be no less than 40%, so that no constituency can have zero turnout or turnout over 100%. Turnout lower than 40% using a uniform swing also results in parties achieving a negative number of votes in some constituencies. Turnout in England in the 2015 general election was 65.8%. [The highest post-war turnout in England was 84.4% in the 1950 general election.](http://www.ukpolitical.info/Turnout45.htm)
+A [Shiny](http://shiny.rstudio.com/) tool to estimate what changes in turnout do to general election results in England. The default assumption is that, if they voted, 50% of non-voters would back Labour, 20% would vote Conservative, 15% would vote Ukip, 10% would support the Liberal Democrats and 5% would vote Green. These inputs can be changed, so long as they add up to 100%. Turnout is capped at 88.5% and can be no less than 17.8%, so that no constituency can have zero turnout or turnout over 100%. Turnout lower than 40% using a uniform swing also results in parties achieving a negative number of votes in some constituencies, so the code corrects for this by requiring all parties to have at least zero votes per constituency. Extremely low turnout can produce distortions in the results, so treat all results with turnout less than 50% with caution.
+
+Turnout defaults to the 65.8% turnout rate in England in the 2015 general election. [The highest post-war turnout in England was 84.4% in the 1950 general election.](http://www.ukpolitical.info/Turnout45.htm)
 
 
 ### Distributions
