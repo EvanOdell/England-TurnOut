@@ -93,7 +93,7 @@ server <- function(input, output, session){
         values$df$green[values$df$green < 0] <- 0
         values$df$labour[values$df$labour < 0] <- 0
         values$df$libdem[values$df$libdem < 0] <- 0
-        values$df$ukip[values$df$ukip < 0] <- 0
+        values$df$ukip[values$df$ukip < 0] <- 
         
       })
       #   output$winner <- renderTable({
