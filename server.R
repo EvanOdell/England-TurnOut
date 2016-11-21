@@ -294,6 +294,9 @@ server <- function(input, output, session){
     output$torySeats <- renderText({
       sum(values$df$torywin==TRUE)})
     
+    output$torySeatShare <- renderText({
+      (sum(values$df$torywin==TRUE))/532})
+    
     output$toryVotes <- renderText({
       formatC(round(sum(values$df$tory),digits=0), format="d", big.mark=',')})
     
@@ -311,6 +314,9 @@ server <- function(input, output, session){
     #Greens
     output$greenSeats <- renderText({
       sum(values$df$greenwin==TRUE)})
+    
+    output$greenSeatShare <- renderText({
+      (sum(values$df$greenwin==TRUE))/532})
     
     output$greenVotes <- renderText({
       formatC(round(sum(values$df$green),digits=0), format="d", big.mark=',')})
@@ -330,6 +336,9 @@ server <- function(input, output, session){
     output$labourSeats <- renderText({
       sum(values$df$labourwin==TRUE)})
     
+    output$labourSeatShare <- renderText({
+      (sum(values$df$labourwin==TRUE))/532})
+    
     output$labourVotes <- renderText({
       formatC(round(sum(values$df$labour),digits=0), format="d", big.mark=',')})
     
@@ -348,6 +357,9 @@ server <- function(input, output, session){
     output$libdemSeats <- renderText({
       sum(values$df$libdemwin==TRUE)})
     
+    output$libdemSeatShare <- renderText({
+      (sum(values$df$libdemwin==TRUE))/532})
+    
     output$libdemVotes <- renderText({
       formatC(round(sum(values$df$libdem),digits=0), format="d", big.mark=',')})
     
@@ -365,6 +377,9 @@ server <- function(input, output, session){
     #Ukip
     output$ukipSeats <- renderText({
       sum(values$df$ukipwin==TRUE)})
+    
+    output$ukipSeatShare <- renderText({
+      (sum(values$df$ukipwin==TRUE))/532})
     
     output$ukipVotes <- renderText({
       formatC(round(sum(values$df$ukip),digits=0), format="d", big.mark=',')})
