@@ -88,6 +88,13 @@ server <- function(input, output, session){
                                                     ifelse(values$df$labourwin==TRUE,"Labour",
                                                            ifelse(values$df$libdemwin==TRUE,"Liberal Democrats",
                                                                   ifelse(values$df$ukipwin==TRUE,"Ukip", NA))))))
+        
+        values$df$tory[values$df$tory < 0] <- 0
+        values$df$green[values$df$green < 0] <- 0
+        values$df$labour[values$df$labour < 0] <- 0
+        values$df$libdem[values$df$libdem < 0] <- 0
+        values$df$ukip[values$df$ukip < 0] <- 0
+        
       })
       #   output$winner <- renderTable({
       #    outcome <- as.data.frame(newData())
