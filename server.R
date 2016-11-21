@@ -24,7 +24,7 @@ cont2 <- readRDS(file = "cont2.rds")
 
 # Define server logic 
 server <- function(input, output, session){
-
+  
   values <- reactiveValues(df=NULL)
   values$df <- data.frame(
     constituency = cont2$constituency,
@@ -44,19 +44,30 @@ server <- function(input, output, session){
     electorate = cont2$electorate,
     votes = cont2$votes
   )
-
-
   
-  observe({
-
+  
+  #  values$df$tory <- ifelse(values$df$tory < 0, 0, values$df$tory)
+  #  values$df$green <- ifelse(values$df$green < 0, 0, values$df$green)
+  #  
+  #  values$df$libdem <- ifelse(values$df$libdem < 0, 0, values$df$libdem)
+  #  values$df$ukip <- ifelse(values$df$ukip < 0, 0, values$df$ukip)
+  
+  
+  observeEvent(input$button, {
+    
     if(input$distro=="Uniform"){#Distribution of turnout increases or decreases are evenly spread across all constituencies
       #If turnout is equal to greater than 65.8
-      newData <- reactive({
+      newData <- eventReactive(input$button,{
         values$df$labour <- cont2$labour + ((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$labourNon/100))
+        values$df$labour <- ifelse(values$df$labour < 0, 0, values$df$labour)
         values$df$tory <- cont2$tory + ((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$toryNon/100))
+        values$df$tory <- ifelse(values$df$tory < 0, 0, values$df$tory)
         values$df$green <- cont2$green  + ((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$greenNon/100))
+        values$df$green <- ifelse(values$df$green < 0, 0, values$df$green)
         values$df$libdem <- cont2$libdem +((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$libdemNon/100))
+        values$df$libdem <- ifelse(values$df$libdem < 0, 0, values$df$libdem)
         values$df$ukip <- cont2$ukip + ((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$ukipNon/100))
+        values$df$ukip <- ifelse(values$df$ukip < 0, 0, values$df$ukip)
         values$df$votes <- cont2$votes + (((input$turnOut - 65.8)/100)*cont2$electorate)
         values$df$labourwin <- as.factor(ifelse(values$df$labour>values$df$tory &
                                                   values$df$labour>values$df$green &
@@ -89,27 +100,23 @@ server <- function(input, output, session){
                                                            ifelse(values$df$libdemwin==TRUE,"Liberal Democrats",
                                                                   ifelse(values$df$ukipwin==TRUE,"Ukip", NA))))))
         
-        values$df$tory[values$df$tory < 0] <- 0
-        values$df$green[values$df$green < 0] <- 0
-        values$df$labour[values$df$labour < 0] <- 0
-        values$df$libdem[values$df$libdem < 0] <- 0
-        values$df$ukip[values$df$ukip < 0] <- 
+        
         
       })
-      #   output$winner <- renderTable({
-      #    outcome <- as.data.frame(newData())
-      #   summary(outcome)},
-      #  striped=TRUE, rownames = FALSE, colnames=FALSE)
-      
       
     }else if(input$distro=="Turnout"){
       #Distribution of turnout increases or decreases are weighted towards constituencies with low turnout 
-      newData <- reactive({
+      newData <- eventReactive(input$button,{
         values$df$labour <- cont2$labour + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$labourNon/100))*cont2$turnStand)
+        values$df$labour <- ifelse(values$df$labour < 0, 0, values$df$labour)
         values$df$tory <- cont2$tory + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$toryNon/100))*cont2$turnStand)
+        values$df$tory <- ifelse(values$df$tory < 0, 0, values$df$tory)
         values$df$green <- cont2$green  + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$greenNon/100))*cont2$turnStand)
+        values$df$green <- ifelse(values$df$green < 0, 0, values$df$green)
         values$df$libdem <- cont2$libdem + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$libdemNon/100))*cont2$turnStand)
+        values$df$libdem <- ifelse(values$df$libdem < 0, 0, values$df$libdem)
         values$df$ukip <- cont2$ukip + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$ukipNon/100))*cont2$turnStand)
+        values$df$ukip <- ifelse(values$df$ukip < 0, 0, values$df$ukip)
         values$df$votes <- cont2$votes + ((((input$turnOut - 65.8)/100)*cont2$electorate)*cont2$turnStand)
         values$df$labourwin <- as.factor(ifelse(values$df$labour>values$df$tory &
                                                   values$df$labour>values$df$green &
@@ -144,13 +151,19 @@ server <- function(input, output, session){
       })
       
     }else if(input$distro=="Marginality"){
-      newData <- reactive({
+      newData <- eventReactive(input$button,{
         values$df$labour <- cont2$labour + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$labourNon/100))*cont2$marginStand)
+        values$df$labour <- ifelse(values$df$labour < 0, 0, values$df$labour)
         values$df$tory <- cont2$tory + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$toryNon/100))*cont2$marginStand)
+        values$df$tory <- ifelse(values$df$tory < 0, 0, values$df$tory)
         values$df$green <- cont2$green  + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$greenNon/100))*cont2$marginStand)
+        values$df$green <- ifelse(values$df$green < 0, 0, values$df$green)
         values$df$libdem <- cont2$libdem + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$libdemNon/100))*cont2$marginStand)
+        values$df$libdem <- ifelse(values$df$libdem < 0, 0, values$df$libdem)
         values$df$ukip <- cont2$ukip + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$ukipNon/100))*cont2$marginStand)
+        values$df$ukip <- ifelse(values$df$ukip < 0, 0, values$df$ukip)
         values$df$votes <- cont2$votes + ((((input$turnOut - 65.8)/100)*cont2$electorate)*cont2$marginStand)
+        
         values$df$labourwin <- as.factor(ifelse(values$df$labour>values$df$tory &
                                                   values$df$labour>values$df$green &
                                                   values$df$labour>values$df$libdem & 
@@ -185,67 +198,67 @@ server <- function(input, output, session){
       
     } else {"Please Select an Input"}
     
-output$winner <- renderTable({validate(
+    output$winner <- renderTable({validate(
       need(input$toryNon+
-            input$greenNon+
-            input$labourNon+
-            input$libdemNon+
-            input$ukipNon == 100, 'Inputs must sum to 100%'))
-outcome <- newData()
-    summary(outcome)},bordered=TRUE,
-    striped=TRUE, rownames = TRUE, colnames=FALSE)
-
-output$seatPlot <- renderPlot({
-   data4 <- data.frame(winner=c("Conservatives",
-                                "Green", "Labour",
-                                "Liberal Democrats",
-                                "Ukip"),seats=c(sum(values$df$torywin==TRUE),
-                                                sum(values$df$greenwin==TRUE),
-                                                sum(values$df$labourwin==TRUE),
-                                                sum(values$df$libdemwin==TRUE),
-                                                sum(values$df$ukipwin==TRUE)))
-
-   parties <- c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip")
-      
-   barcolour3 <- c("Conservatives" = "#0087dc",
-                  "Green" = "#6AB023", #Green
-                  "Labour" = "#DC241f", #Labour
-                  "Liberal Democrats" = "#FDBB30", #Libdem
-                  "Ukip" = "#70147A" #Ukip
-   )
-   
-    gg <- ggplot(data4, aes(x = winner, y = seats, fill=factor(parties), label = seats)) + geom_bar(stat = "identity") + scale_fill_manual(values = barcolour3, breaks = parties) + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold")) + scale_x_discrete(limits = c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip"), drop=FALSE)  + xlab("Party") + ylab("Seats in England") + geom_text(aes(y = seats + 0.1), position = position_dodge(0.9), vjust = 0, size = 6)+ guides(fill=FALSE)
+             input$greenNon+
+             input$labourNon+
+             input$libdemNon+
+             input$ukipNon == 100, 'Inputs must sum to 100%'))
+      outcome <- newData()
+      summary(outcome)},bordered=TRUE,
+      striped=TRUE, rownames = TRUE, colnames=FALSE)
     
-    print(gg)
-      })
-
-
-
-output$votePlot <- renderPlot({
-  
-  data6 <- data.frame(winner=c("Conservatives",
-                               "Green", "Labour",
-                               "Liberal Democrats",
-                               "Ukip"),votes=c(sum(values$df$tory),
-                                               sum(values$df$green),
-                                               sum(values$df$labour),
-                                               sum(values$df$libdem),
-                                               sum(values$df$ukip)))
-  
-  parties <- c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip")
-  
-  barcolour3 <- c("Conservatives" = "#0087dc",
-                  "Green" = "#6AB023", #Green
-                  "Labour" = "#DC241f", #Labour
-                  "Liberal Democrats" = "#FDBB30", #Libdem
-                  "Ukip" = "#70147A" #Ukip
-  )
-  
-  gg3 <- ggplot(data6, aes(x = winner, y = votes, fill=factor(parties), label = votes)) + geom_bar(stat = "identity") + scale_fill_manual(values = barcolour3, breaks = parties) + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold")) + scale_x_discrete(limits = c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip"), drop=FALSE)  + xlab("Party") + ylab("Votes in England") + geom_text(aes(label= paste0(formatC(round(votes),format="d", big.mark=','))), position = position_dodge(0.9), vjust = 0, size = 6)+ guides(fill=FALSE)
-  
-  print(gg3)
-
-})
+    output$seatPlot <- renderPlot({
+      data4 <- data.frame(winner=c("Conservatives",
+                                   "Green", "Labour",
+                                   "Liberal Democrats",
+                                   "Ukip"),seats=c(sum(values$df$torywin==TRUE),
+                                                   sum(values$df$greenwin==TRUE),
+                                                   sum(values$df$labourwin==TRUE),
+                                                   sum(values$df$libdemwin==TRUE),
+                                                   sum(values$df$ukipwin==TRUE)))
+      
+      parties <- c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip")
+      
+      barcolour3 <- c("Conservatives" = "#0087dc",
+                      "Green" = "#6AB023", #Green
+                      "Labour" = "#DC241f", #Labour
+                      "Liberal Democrats" = "#FDBB30", #Libdem
+                      "Ukip" = "#70147A" #Ukip
+      )
+      
+      gg <- ggplot(data4, aes(x = winner, y = seats, fill=factor(parties), label = seats)) + geom_bar(stat = "identity") + scale_fill_manual(values = barcolour3, breaks = parties) + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold")) + scale_x_discrete(limits = c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip"), drop=FALSE)  + xlab("Party") + ylab("Seats in England") + geom_text(aes(y = seats + 0.1), position = position_dodge(0.9), vjust = 0, size = 6)+ guides(fill=FALSE)
+      
+      print(gg)
+    })
+    
+    
+    
+    output$votePlot <- renderPlot({
+      
+      data6 <- data.frame(winner=c("Conservatives",
+                                   "Green", "Labour",
+                                   "Liberal Democrats",
+                                   "Ukip"),votes=c(sum(values$df$tory),
+                                                   sum(values$df$green),
+                                                   sum(values$df$labour),
+                                                   sum(values$df$libdem),
+                                                   sum(values$df$ukip)))
+      
+      parties <- c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip")
+      
+      barcolour3 <- c("Conservatives" = "#0087dc",
+                      "Green" = "#6AB023", #Green
+                      "Labour" = "#DC241f", #Labour
+                      "Liberal Democrats" = "#FDBB30", #Libdem
+                      "Ukip" = "#70147A" #Ukip
+      )
+      
+      gg3 <- ggplot(data6, aes(x = winner, y = votes, fill=factor(parties), label = votes)) + geom_bar(stat = "identity") + scale_fill_manual(values = barcolour3, breaks = parties) + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold")) + scale_x_discrete(limits = c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip"), drop=FALSE)  + xlab("Party") + ylab("Votes in England") + geom_text(aes(label= paste0(formatC(round(votes),format="d", big.mark=','))), position = position_dodge(0.9), vjust = 0, size = 6)+ guides(fill=FALSE)
+      
+      print(gg3)
+      
+    })
     
     #Conservatives
     output$torySeats <- renderText({
@@ -338,7 +351,7 @@ output$votePlot <- renderPlot({
     output$ukipShareChange  <- renderText({paste(
       round(((sum(values$df$ukip)/sum(values$df$votes))*100)-((sum(cont2$ukip)/sum(cont2$votes)*100)),digits=2),"%",sep="")})
     
-
+    
     
     ### PROPORTONALITY
     
@@ -366,7 +379,7 @@ output$votePlot <- renderPlot({
                                     (sum(values$df$labourwin==TRUE)/532)*100,
                                     (sum(values$df$libdemwin==TRUE)/532)*100,
                                     (sum(values$df$ukipwin==TRUE)/532)*100))
-  
+    
     
     switch(input$propType,
            
@@ -412,9 +425,9 @@ output$votePlot <- renderPlot({
     )
     
     
-  
+    
   })
-         
+  
 }
 
 

@@ -20,7 +20,9 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                          #2. what other models are there?
                          tabPanel("Turnout Tool",
                                   
-                                  fluidPage(
+                                  fluidPage(tags$head(
+                                    tags$style(HTML('#button{background-color:green;
+                                                             font-weight:bold;}'))),   
                                     
                                     includeCSS("style.css"),
                                     
@@ -35,12 +37,12 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                                          min=17.8, max=88.5, value=65.8, 
                                                          step = 0.1, ticks = TRUE, animate = FALSE,
                                                          width = NULL),
+                                             actionButton("button", "Calculate Results"),
                                              
                                              selectInput(inputId = "distro", 
                                                          label = "Select a distribution",
                                                          choices = c("Uniform", "Turnout", "Marginality"),
                                                          selected = "Uniform"),
-                                            
                                              h4("Results"),
                                              tableOutput("winner"),
                                              selectInput(inputId = "propType",
@@ -49,6 +51,7 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                                          selected = "Gallagher"),
                                              h4("Proportionality:"),
                                              textOutput("propOutput"),
+                                             
                                              br(),
                                              h4("Select Voting Preference of Non-Voters:"),
                                              numericInput("toryNon", "% of Non-Voters Supporting the Conservatives",
@@ -67,10 +70,10 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                              plotOutput("seatPlot", height = "375px"),
                                              h3("Votes"),
                                              plotOutput("votePlot")),
-                                            br(),
-                                            br()
+                                      br(),
+                                      br()
                                     ),
-                                      
+                                    
                                     fluidRow(
                                       column(6, offset=4,
                                              h4("Results and Changes"),
@@ -132,27 +135,27 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                                )
                                              )
                                              )
-                                          )),
-                                      br(),
-                                      br()
-                                        
-                                      )
+                                      )),
+                                    br(),
+                                    br()
+                                    
+                                  )
                          ),
-
+                         
                          tabPanel("Methods",
-                                fluidPage(
-                                  fluidRow(
-                                    column(6,offset =3,
-                                           includeMarkdown("methods.rmd")
-                                    )
-                                  ))
+                                  fluidPage(
+                                    fluidRow(
+                                      column(6,offset =3,
+                                             includeMarkdown("methods.rmd")
+                                      )
+                                    ))
                          ),
                          tabPanel("Discussion",
-                                fluidPage(
-                                  fluidRow(
-                                    column(6,offset =3,
-                                           includeMarkdown("discussion.rmd")
-                                    )
-                                  ))
+                                  fluidPage(
+                                    fluidRow(
+                                      column(6,offset =3,
+                                             includeMarkdown("discussion.rmd")
+                                      )
+                                    ))
                          )
-                  ))
+))
