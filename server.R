@@ -294,8 +294,8 @@ server <- function(input, output, session){
     output$torySeats <- renderText({
       sum(values$df$torywin==TRUE)})
     
-    output$torySeatShare <- renderText({
-      (sum(values$df$torywin==TRUE))/532})
+    output$torySeatShare <- renderText({paste(
+      round((sum(values$df$torywin==TRUE)/532)*100, digits=2),"%",sep="") })
     
     output$toryVotes <- renderText({
       formatC(round(sum(values$df$tory),digits=0), format="d", big.mark=',')})

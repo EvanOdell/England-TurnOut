@@ -81,6 +81,7 @@ ui <- shinyUI(navbarPage(a(href="http://shiny.evanodell.com", "Return to Shiny H
                                                  tags$tr(
                                                    tags$th(""),
                                                    tags$th("Seats"),
+                                                   tags$th("Seat Share"),
                                                    tags$th("Votes"),
                                                    tags$th("Vote Share"),
                                                    tags$th("Seat Change"),
