@@ -46,13 +46,6 @@ server <- function(input, output, session){
   )
   
   
-  #  values$df$tory <- ifelse(values$df$tory < 0, 0, values$df$tory)
-  #  values$df$green <- ifelse(values$df$green < 0, 0, values$df$green)
-  #  
-  #  values$df$libdem <- ifelse(values$df$libdem < 0, 0, values$df$libdem)
-  #  values$df$ukip <- ifelse(values$df$ukip < 0, 0, values$df$ukip)
-  
-  
   observeEvent(input$button, {
     
     if(input$distro=="Uniform"){#Distribution of turnout increases or decreases are evenly spread across all constituencies
@@ -100,13 +93,21 @@ server <- function(input, output, session){
                                                 values$df$ukip>values$df$labour & 
                                                 values$df$ukip>values$df$libdem, TRUE,FALSE))
         
+        values$df$toryGain <- as.factor(ifelse((values$df$torywin==TRUE) & (cont2$torywin==FALSE),TRUE,FALSE))
+        
+        values$df$greenGain <- as.factor(ifelse((values$df$greenwin==TRUE) & (cont2$greenwin==FALSE),TRUE,FALSE))
+        
+        values$df$labourGain <- as.factor(ifelse((values$df$labourwin==TRUE) & (cont2$labourwin==FALSE),TRUE,FALSE))
+        
+        values$df$libdemGain <- as.factor(ifelse((values$df$libdemwin==TRUE) & (cont2$libdemwin==FALSE),TRUE,FALSE))
+        
+        values$df$ukipGain <- as.factor(ifelse((values$df$ukipwin==TRUE) & (cont2$ukipwin==FALSE),TRUE,FALSE))
+        
         values$df$winner <- as.factor(ifelse(values$df$torywin==TRUE,"Conservatives",
                                              ifelse(values$df$greenwin==TRUE,"Green",
                                                     ifelse(values$df$labourwin==TRUE,"Labour",
                                                            ifelse(values$df$libdemwin==TRUE,"Liberal Democrats",
                                                                   ifelse(values$df$ukipwin==TRUE,"Ukip", NA))))))
-        
-        
         
       })
       
@@ -155,11 +156,22 @@ server <- function(input, output, session){
                                                 values$df$ukip>values$df$labour & 
                                                 values$df$ukip>values$df$libdem, TRUE,FALSE))
         
+        values$df$toryGain <- as.factor(ifelse((values$df$torywin==TRUE) & (cont2$torywin==FALSE),TRUE,FALSE))
+        
+        values$df$greenGain <- as.factor(ifelse((values$df$greenwin==TRUE) & (cont2$greenwin==FALSE),TRUE,FALSE))
+        
+        values$df$labourGain <- as.factor(ifelse((values$df$labourwin==TRUE) & (cont2$labourwin==FALSE),TRUE,FALSE))
+        
+        values$df$libdemGain <- as.factor(ifelse((values$df$libdemwin==TRUE) & (cont2$libdemwin==FALSE),TRUE,FALSE))
+        
+        values$df$ukipGain <- as.factor(ifelse((values$df$ukipwin==TRUE) & (cont2$ukipwin==FALSE),TRUE,FALSE))
+        
         values$df$winner <- as.factor(ifelse(values$df$torywin==TRUE,"Conservatives",
                                              ifelse(values$df$greenwin==TRUE,"Green",
                                                     ifelse(values$df$labourwin==TRUE,"Labour",
                                                            ifelse(values$df$libdemwin==TRUE,"Liberal Democrats",
                                                                   ifelse(values$df$ukipwin==TRUE,"Ukip", NA))))))      
+        
       })
       
     }else if(input$distro=="Marginality"){
@@ -206,6 +218,16 @@ server <- function(input, output, session){
                                                 values$df$ukip>values$df$green &
                                                 values$df$ukip>values$df$labour & 
                                                 values$df$ukip>values$df$libdem, TRUE,FALSE))
+        
+        values$df$toryGain <- as.factor(ifelse((values$df$torywin==TRUE) & (cont2$torywin==FALSE),TRUE,FALSE))
+        
+        values$df$greenGain <- as.factor(ifelse((values$df$greenwin==TRUE) & (cont2$greenwin==FALSE),TRUE,FALSE))
+        
+        values$df$labourGain <- as.factor(ifelse((values$df$labourwin==TRUE) & (cont2$labourwin==FALSE),TRUE,FALSE))
+        
+        values$df$libdemGain <- as.factor(ifelse((values$df$libdemwin==TRUE) & (cont2$libdemwin==FALSE),TRUE,FALSE))
+        
+        values$df$ukipGain <- as.factor(ifelse((values$df$ukipwin==TRUE) & (cont2$ukipwin==FALSE),TRUE,FALSE))
         
         values$df$winner <- as.factor(ifelse(values$df$torywin==TRUE,"Conservatives",
                                              ifelse(values$df$greenwin==TRUE,"Green",
@@ -395,6 +417,96 @@ server <- function(input, output, session){
     
     output$ukipShareChange  <- renderText({paste(
       round(((sum(values$df$ukip)/sum(values$df$votes))*100)-((sum(cont2$ukip)/sum(cont2$votes)*100)),digits=2),"%",sep="")})
+    
+    #GAINS
+    
+    output$toryGainsTable <- renderTable({
+      
+      toryGainDF <- subset(values$df, toryGain=="TRUE")
+      
+      toryGainDF$from <- cont2$winner[match(toryGainDF$constituency,cont2$constituency)]
+      
+      toryGainDFsummary <- subset(toryGainDF, select=c("constituency", "from"))
+      
+      if(nrow(toryGainDFsummary)==0){
+        print("No Conservative Gains")
+      } else{
+        
+        toryGainDFsummary
+      }
+      
+    },bordered=TRUE,striped=TRUE, rownames = FALSE, colnames=TRUE)
+    
+    output$greenGainsTable <- renderTable({
+      
+      greenGainDF <- subset(values$df, greenGain=="TRUE")
+      
+      greenGainDF$from <- cont2$winner[match(greenGainDF$constituency,cont2$constituency)]
+      
+      greemGainDFsummary <- subset(greenGainDF, select=c("constituency", "from"))
+      
+      if(nrow(greemGainDFsummary)==0){
+        print("No Green Gains")
+      } else{
+        
+        greemGainDFsummary
+      }
+      
+    },bordered=TRUE,striped=TRUE, rownames = FALSE, colnames=TRUE)
+    
+    output$labourGainsTable <- renderTable({
+      
+      labourGainDF <- subset(values$df, labourGain=="TRUE")
+      
+      labourGainDF$from <- cont2$winner[match(labourGainDF$constituency,cont2$constituency)]
+      
+      labourGainDFsummary <- subset(labourGainDF, select=c("constituency", "from"))
+      
+      if(nrow(labourGainDFsummary)==0){
+        print("No Labour Gains")
+      } else{
+        
+        labourGainDFsummary
+        
+      }
+      
+    },bordered=TRUE,striped=TRUE, rownames = FALSE, colnames=TRUE)
+    
+    output$libdemGainsTable <- renderTable({
+      
+      libdemGainDF <- subset(values$df, libdemGain=="TRUE")
+      
+      libdemGainDF$from <- cont2$winner[match(libdemGainDF$constituency,cont2$constituency)]
+      
+      libdemGainDFsummary <- subset(libdemGainDF, select=c("constituency", "from"))
+      
+      if(nrow(libdemGainDFsummary)==0){
+        print("No Liberal Democrat Gains")
+      } else{
+        
+        libdemGainDFsummary
+      }
+      
+    },bordered=TRUE,striped=TRUE, rownames = FALSE, colnames = TRUE)
+    
+    output$ukipGainsTable <- renderTable({
+      
+      ukipGainDF <- subset(values$df, ukipGain=="TRUE")
+      
+      ukipGainDF$from <- cont2$winner[match(ukipGainDF$constituency,cont2$constituency)]
+      
+      ukipGainDFsummary <- subset(ukipGainDF, select=c("constituency", "from"))
+      
+      if(nrow(ukipGainDFsummary)==0){
+        print("No Ukip Gains")
+      } else{
+        
+        ukipGainDFsummary
+      }
+      
+    },bordered=TRUE,striped=TRUE, rownames = FALSE, colnames = TRUE)
+    
+    
     
     ### PROPORTONALITY
     observeEvent(input$button, {
