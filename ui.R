@@ -133,23 +133,23 @@ ui <- shinyUI(fluidPage(tags$head(
                    )
                    )
                  )),
-        tabPanel("Gains",
+        tabPanel("Seat Gains",
                  fluidPage(
                    fluidRow(
                      
-                     h4("Conservative Gains"),
+                     h4("Conservative Seat Gains"),
                      tableOutput("toryGainsTable"),
                      
-                     h4("Green Gains"),
+                     h4("Green Seat Gains"),
                      tableOutput("greenGainsTable"),
                      
-                     h4("Labour Gains"),
+                     h4("Labour Seat Gains"),
                      tableOutput("labourGainsTable"),
                      
-                     h4("Liberal Democrat Gains"),
+                     h4("Liberal Democrat Seat Gains"),
                      tableOutput("libdemGainsTable"),
                      
-                     h4("UKIP Gains"),
+                     h4("UKIP Seat Gains"),
                      tableOutput("ukipGainsTable")
                    )
                  )
