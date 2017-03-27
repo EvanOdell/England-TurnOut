@@ -1,11 +1,4 @@
-#
-# This is the server logic of a Shiny web application. You can run the 
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
+
 
 library(shiny)
 library(rmarkdown)
@@ -13,14 +6,9 @@ library(ggplot2)
 library(dplyr)
 library(scales)
 library(SciencesPo)
+library(readr)
 
-cont2 <- readRDS(file = "cont2.rds")
-
-#Home
-#setwd("~/Google Drive/Study Guides/Statistics/R/Shiny/Test1/England-TurnOut")
-
-#Work
-#setwd("C:/Users/eodell/Google Drive/Study Guides/Statistics/R/Shiny/Test1/England-TurnOut")
+cont2 <- read_rds("cont2.rds")
 
 # Define server logic 
 server <- function(input, output, session){
@@ -34,11 +22,13 @@ server <- function(input, output, session){
     green = cont2$green,
     libdem = cont2$libdem,
     ukip = cont2$ukip,
+    other = cont2$other,
     labourwin = cont2$labourwin,
     torywin = cont2$torywin,
     greenwin = cont2$greenwin,
     libdemwin = cont2$libdemwin,
     ukipwin = cont2$ukipwin,
+    otherwin = cont2$otherwin,
     winner = cont2$winner,
     spare = cont2$spare,
     electorate = cont2$electorate,
@@ -67,7 +57,7 @@ server <- function(input, output, session){
         values$df$libdem <- ifelse(values$df$libdem < 0, 0, values$df$libdem)
         values$df$ukip <- cont2$ukip + ((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$ukipNon/100))
         values$df$ukip <- ifelse(values$df$ukip < 0, 0, values$df$ukip)
-        values$df$votes <- values$df$tory + values$df$labour + values$df$green + values$df$libdem + values$df$ukip
+        values$df$votes <- values$df$tory + values$df$labour + values$df$green + values$df$libdem + values$df$ukip + values$df$other
         values$df$labourwin <- as.factor(ifelse(values$df$labour>values$df$tory &
                                                   values$df$labour>values$df$green &
                                                   values$df$labour>values$df$libdem & 
@@ -130,7 +120,7 @@ server <- function(input, output, session){
         values$df$libdem <- ifelse(values$df$libdem < 0, 0, values$df$libdem)
         values$df$ukip <- cont2$ukip + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$ukipNon/100))*cont2$turnStand)
         values$df$ukip <- ifelse(values$df$ukip < 0, 0, values$df$ukip)
-        values$df$votes <- values$df$tory + values$df$labour + values$df$green + values$df$libdem + values$df$ukip
+        values$df$votes <- values$df$tory + values$df$labour + values$df$green + values$df$libdem + values$df$ukip + values$df$other
         values$df$labourwin <- as.factor(ifelse(values$df$labour>values$df$tory &
                                                   values$df$labour>values$df$green &
                                                   values$df$labour>values$df$libdem & 
@@ -192,7 +182,7 @@ server <- function(input, output, session){
         values$df$libdem <- ifelse(values$df$libdem < 0, 0, values$df$libdem)
         values$df$ukip <- cont2$ukip + (((((input$turnOut - 65.8)/100)*cont2$electorate)*(input$ukipNon/100))*cont2$marginStand)
         values$df$ukip <- ifelse(values$df$ukip < 0, 0, values$df$ukip)
-        values$df$votes <- values$df$tory + values$df$labour + values$df$green + values$df$libdem + values$df$ukip
+        values$df$votes <- values$df$tory + values$df$labour + values$df$green + values$df$libdem + values$df$ukip + values$df$other
         
         values$df$labourwin <- as.factor(ifelse(values$df$labour>values$df$tory &
                                                   values$df$labour>values$df$green &
