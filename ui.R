@@ -126,8 +126,8 @@ ui <- shinyUI(fluidPage(tags$head(
                                tags$td(textOutput("ukipVoteChange")),
                                tags$td(textOutput("ukipShareChange"))
                        )
-                     )
-                   )
+                     ),
+                   tags$hr())
                    )
                  )),
         tabPanel("Seat Gains",
