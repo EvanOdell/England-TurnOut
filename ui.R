@@ -62,7 +62,7 @@ ui <- shinyUI(fluidPage(tags$head(
                  h3("Votes"),
                  plotOutput("votePlot", height = "425px"),
                  br(),
-                 fluidRow(
+                 fluidRow(column(10,
                    
                    h4("Results and Changes"),
                    HTML(paste(
@@ -129,7 +129,7 @@ ui <- shinyUI(fluidPage(tags$head(
                      ),
                    tags$hr())
                    )
-                 )),
+                 ), column(6))),
         tabPanel("Seat Gains",
                  fluidPage(
                    fluidRow(

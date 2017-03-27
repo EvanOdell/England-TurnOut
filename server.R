@@ -268,7 +268,7 @@ server <- function(input, output, session){
       ggSeats <- ggplot(data4, aes(x = winner, y = seats, fill=factor(parties), label = seats)) + geom_bar(stat = "identity") + scale_fill_manual(values = barcolour3, breaks = parties) + theme(axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold")) + scale_x_discrete(limits = c("Conservatives", "Green", "Labour", "Liberal Democrats", "Ukip"), drop=FALSE)  + xlab("Party") + ylab("Seats in England") + geom_text(aes(y = seats + 0.1), position = position_dodge(0.9), vjust = -0.2, size = 6)+ guides(fill=FALSE)
       
       print(ggSeats)
-    })
+    },height = 400, width = 600)
     
     output$votePlot <- renderPlot({
       validate(
@@ -300,7 +300,7 @@ server <- function(input, output, session){
       
       print(ggVote)
       
-    })
+    },height = 400, width = 600)
     
     #Conservatives
     output$torySeats <- renderText({
